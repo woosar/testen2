@@ -5,10 +5,13 @@ interface Props {
 }
 
 function ToDoList({ title = 'Default Title' }: Props) {
+  const handleClick = () => {
+    console.log('hello click');
+  };
   return (
-    <div className={'w-1/2 bg-amber-300 m-auto p-4 rounded'}>
-      <h1 className={'text-2xl m-auto'}>{title}</h1>
-      <Button>asd</Button>
+    <div className={'w-1/3 bg-gray-900 m-auto p-4 rounded'}>
+      <h1 className={'text-2xl m-auto text-cyan-100'}>{title}</h1>
+      <Button onClick={handleClick}>asd</Button>
     </div>
   );
 }
