@@ -13,7 +13,11 @@ interface FlashMessageState {
 }
 
 function ToDoList({ title = 'Default Title' }: Props) {
-  const [listEntries, setListEntries] = useState<string[]>([]);
+  const [listEntries, setListEntries] = useState<string[]>([
+    'Doing homework',
+    'walking the dog',
+    'Cleaning the kitchen',
+  ]);
   const [inputValue, setInputValue] = useState<string>('');
   const [flashMessage, setFlashMessage] = useState<FlashMessageState | null>(
     null
@@ -50,6 +54,14 @@ function ToDoList({ title = 'Default Title' }: Props) {
     }
   };
 
+  const handleRemove = (index: number, message: string) => {
+    setListEntries(listEntries.filter((_, i) => i !== index));
+    setFlashMessage({
+      message: `Task "${message}" removed successfully`,
+      type: 'success',
+    });
+  };
+
   return (
     <div className={'w-1/3 bg-gray-900 m-auto p-4 rounded'}>
       <h1 className={'text-2xl m-auto text-cyan-100 pb-4'}>
@@ -68,8 +80,12 @@ function ToDoList({ title = 'Default Title' }: Props) {
           Add Task
         </Button>
       </form>
-      {listEntries.map((entry) => (
-        <ListEntry task={entry} />
+      {listEntries.map((entry, index) => (
+        <ListEntry
+          key={index}
+          task={entry}
+          onRemove={() => handleRemove(index, entry)}
+        />
       ))}
 
       <div className={'p-1'}></div>
