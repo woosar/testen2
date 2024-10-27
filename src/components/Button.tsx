@@ -13,7 +13,7 @@ function Button({ children, onClick, style = 'primary' }: Props) {
   return (
     <button
       onClick={onClick}
-      className={`${styleClasses[style]} p-4 pl-4 pr-4 rounded  
+      className={`${styleClasses[style]} mr-3 p-3 pl-4 pr-4 rounded  w-[80px]
       transform hover:scale-105 hover:font-bold transition duration-100 active:scale-95`}
     >
       {children}
