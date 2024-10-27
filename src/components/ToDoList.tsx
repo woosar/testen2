@@ -40,7 +40,11 @@ function ToDoList({ title = 'Default Title' }: Props) {
     setFlashMessage({ message: 'List reset successfully', type: 'success' });
   };
   const handleSort = () => {
-    console.log('hello sort');
+    const sorted_list: string[] = [...listEntries].sort();
+    for (const asd of sorted_list) {
+      console.log(asd);
+    }
+    setListEntries(sorted_list);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
