@@ -1,7 +1,9 @@
+import ToDoList from "./components/ToDoList.tsx";
+
 function App() {
 
 
-    return <div>Hello World</div>
+    return <ToDoList/>
 }
 
 export default App
