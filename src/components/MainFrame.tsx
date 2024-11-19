@@ -11,8 +11,12 @@ interface Props {
 
 function MainFrame({ setDropDownVisible, month }: Props) {
   const listOfPages: string[] = ['purchases', 'categories', 'evaluation'];
-  const [activePage, setActivePage] = useState<string>('home');
+  const [activePage, setActivePage] = useState<string>('evaluation');
   const [remainingBudget, setRemainingBudget] = useState<number | null>(null);
+  const [blocked, setBlocked] = useState<boolean>(true);
+  const [eom, setEom] = useState<boolean>(false);
+  const [rate, setRate] = useState<boolean>(true);
+  const [savingNecessary, setSavingNecessary] = useState<boolean>(true);
 
   return (
     <div className={'w-1/2 m-auto bg-gray-800 rounded text-gray-300 flex p-2'}>
@@ -23,6 +27,13 @@ function MainFrame({ setDropDownVisible, month }: Props) {
             month={month[0]}
             year={month[1]}
             setDropDownVisible={setDropDownVisible}
+            savingNecessary={savingNecessary}
+            setRate={setRate}
+            setEom={setEom}
+            setBlocked={setBlocked}
+            blocked={blocked}
+            eom={eom}
+            rate={rate}
           />
         </div>
         <div className={'w-full flex'}>
@@ -38,6 +49,10 @@ function MainFrame({ setDropDownVisible, month }: Props) {
               page={activePage}
               month={month}
               setRemainingBudget={setRemainingBudget}
+              blocked={blocked}
+              eom={eom}
+              rate={rate}
+              setSavingNecessary={setSavingNecessary}
             />
           </div>
         </div>

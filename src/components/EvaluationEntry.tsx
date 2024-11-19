@@ -8,7 +8,7 @@ interface Props {
 const EvaluationEntry = ({ data }: Props) => {
   return (
     <div className={'w-full flex items-center'}>
-      <div className={'w-1/3 mr-auto p-2 rounded bg-blue-700 flex m-1'}>
+      <div className={'w-1/3 mr-auto p-2 rounded bg-gray-600 flex m-1'}>
         <div className={'mr-auto'}> {data.name}</div>
         <div className={'ml-auto'}>
           {' '}

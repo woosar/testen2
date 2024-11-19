@@ -4,13 +4,32 @@ interface Props {
   page: string;
   month: [number, number];
   setRemainingBudget: (value: number) => void;
+  blocked: boolean;
+  eom: boolean;
+  rate: boolean;
+  setSavingNecessary: (value: boolean) => void;
 }
 
-const Content = ({ page, month, setRemainingBudget }: Props) => {
+const Content = ({
+  page,
+  month,
+  setRemainingBudget,
+  blocked,
+  eom,
+  rate,
+  setSavingNecessary,
+}: Props) => {
   const contentFrame = (page: string) => {
     if (page === 'evaluation') {
       return (
-        <Evaluations month={month} setRemainingBudget={setRemainingBudget} />
+        <Evaluations
+          month={month}
+          setRemainingBudget={setRemainingBudget}
+          blocked={blocked}
+          eom={eom}
+          rate={rate}
+          setSavingNecessary={setSavingNecessary}
+        />
       );
     }
     return <span>{page}</span>;

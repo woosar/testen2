@@ -111,7 +111,10 @@ export const condense_monthly_balance = (monthly_balance: ITag[]) => {
 
 export const create_overview = async (
   year: number,
-  month: number
+  month: number,
+  blocked: boolean,
+  include_monthly_rate: boolean,
+  end_of_month: boolean
 ): Promise<IEntry[]> => {
   const config = await getConfig();
   const monthly_evaluation_by_tag = await monthly_balance(year, month);
@@ -187,9 +190,6 @@ export const create_overview = async (
 
   entries.push(create_entry('Aktuelles Guthaben', actual_sum));
 
-  const current_balance =
-    actual_sum - config.block_value - gather_rest_values(entries);
-  entries.push(create_entry('Aktuelles Budget', current_balance));
   entries.push(create_entry('Sparziel', Math.round(100 * config.savings_goal)));
 
   const queryParams = {
@@ -208,7 +208,27 @@ export const create_overview = async (
       .reduce((acc, curr) => acc + curr, 0) -
     Math.round(100 * config.savings_goal);
 
-  entries.push(create_entry('Aktuell Gespart', current_savings));
+  console.log(current_savings);
+  let monthly_rate: number | null;
+  if (current_savings < 0 && include_monthly_rate) {
+    monthly_rate = Math.round(current_savings / remaining_months());
+    entries.push(create_entry('Monatliche Rate', monthly_rate));
+  } else {
+    monthly_rate = null;
+  }
+  const current_balance =
+    actual_sum +
+    (monthly_rate ?? 0) -
+    (blocked ? config.block_value : 0) -
+    (end_of_month ? 0 : gather_rest_values(entries));
+  entries.push(create_entry('Aktuelles Budget', current_balance));
+
+  console.log(monthly_rate);
+
+  const current_savings_name: string =
+    current_savings > 0 ? 'Aktuell Gespart' : 'Bis zum Sparziel';
+
+  entries.push(create_entry(current_savings_name, Math.abs(current_savings)));
   // console.log(entries);
   return entries;
 };
@@ -222,10 +242,13 @@ const gather_rest_values = (entries: IEntry[]): number => {
 
 export const get_overview_interface = async (
   year: number,
-  month: number
+  month: number,
+  blocked: boolean,
+  rate: boolean,
+  eom: boolean
 ): Promise<IEntries | null> => {
   try {
-    const overview = await create_overview(year, month);
+    const overview = await create_overview(year, month, blocked, rate, eom);
     return {
       current_balance: overview.filter(
         (entry) => entry.name === 'Aktuelles Budget'
@@ -234,10 +257,13 @@ export const get_overview_interface = async (
         (entry) => entry.name === 'Aktuelles Guthaben'
       )[0],
       current_savings: overview.filter(
-        (entry) => entry.name === 'Aktuell Gespart'
+        (entry) =>
+          entry.name === 'Aktuell Gespart' || entry.name === 'Bis zum Sparziel'
       )[0],
       gas: overview.filter((entry) => entry.name === 'Tanken')[0],
-      monthly_rate: overview.filter((entry) => entry.name === 'Einnahmen')[0],
+      monthly_rate: overview.filter(
+        (entry) => entry.name === 'Monatliche Rate'
+      )[0],
       necessary: overview.filter(
         (entry) => entry.name === 'Notwendige Ausgaben'
       )[0],
@@ -252,4 +278,11 @@ export const get_overview_interface = async (
     console.error(`hon hon: ${error}`);
     return null;
   }
+};
+
+const remaining_months = () => {
+  const date = new Date();
+  const month = date.getMonth();
+
+  return 12 - month;
 };

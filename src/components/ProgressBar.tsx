@@ -9,7 +9,7 @@ const ProgressBar = ({ max_value, current_value }: Props) => {
   return (
     <div className="w-full bg-gray-600 rounded">
       <div
-        className="text-black bg-blue-500 p-2 rounded flex"
+        className="text-black bg-gray-500 p-2 rounded flex"
         style={{ width: `${percentage}%`, maxWidth: '100%' }}
       >
         <span className={'m-auto'}>{percentage.toFixed(2)} %</span>
