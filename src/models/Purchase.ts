@@ -11,6 +11,14 @@ const purchaseSchema = new Schema(
   { collection: 'purchases' }
 );
 
+export interface IPurchase {
+  _id: string;
+  date: Date;
+  sum: number;
+  sheet_name: string;
+  comment: string;
+}
+
 // Create the Mongoose model for the Purchase schema
 const Purchase = model('Purchase', purchaseSchema);
 

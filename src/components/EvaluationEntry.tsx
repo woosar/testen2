@@ -6,25 +6,27 @@ interface Props {
 }
 
 const EvaluationEntry = ({ data }: Props) => {
+  const progress: boolean = data.max_value != null && data.rest_value != null;
+
+  const percent =
+    data.max_value != null && data.rest_value != null
+      ? Math.round(100 - (100 * data.rest_value) / data.max_value)
+      : 100;
+  // const percent = 50;
   return (
     <div className={'w-full flex items-center'}>
-      <div className={'w-1/3 mr-auto p-2 rounded bg-gray-600 flex m-1'}>
+      <div
+        className={'w-full p-2 rounded bg-gray-600 flex m-1'}
+        style={{
+          background: `linear-gradient(to right, #4B5563 ${percent}%, #374151 ${percent}%, #374151 100%)`,
+        }}
+      >
         <div className={'mr-auto'}> {data.name}</div>
         <div className={'ml-auto'}>
           {' '}
           {(data.current_value / 100).toFixed(2)}
         </div>
       </div>
-      {data.max_value && data.rest_value ? (
-        <div className={'w-2/3 flex bg-yellow-500 justify-end rounded ml-2'}>
-          <ProgressBar
-            max_value={data.max_value}
-            current_value={data.current_value}
-          />
-        </div>
-      ) : (
-        <div className={'p-2 w-2/3 m-1 text-gray-700'}>asd</div>
-      )}
     </div>
   );
 };

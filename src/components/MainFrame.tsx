@@ -2,14 +2,12 @@ import Navbar from './Navbar.tsx';
 import Content from './Content.tsx';
 import { useEffect, useState } from 'react';
 import Dashboard from './Dashboard.tsx';
-import { sumTest } from '../services/evaluationService.ts';
 
 interface Props {
-  setDropDownVisible: (isVisible: boolean) => void;
   month: [number, number];
 }
 
-function MainFrame({ setDropDownVisible, month }: Props) {
+function MainFrame({ month }: Props) {
   const listOfPages: string[] = ['purchases', 'categories', 'evaluation'];
   const [activePage, setActivePage] = useState<string>('evaluation');
   const [remainingBudget, setRemainingBudget] = useState<number | null>(null);
@@ -18,15 +16,28 @@ function MainFrame({ setDropDownVisible, month }: Props) {
   const [rate, setRate] = useState<boolean>(true);
   const [savingNecessary, setSavingNecessary] = useState<boolean>(true);
 
+  useEffect(() => {
+    const currentDay = new Date().getDate();
+    console.log('hennelooo');
+    if (currentDay >= 25) {
+      setEom(true);
+    } else {
+      setEom(false);
+    }
+  }, []);
+
   return (
-    <div className={'w-1/2 m-auto bg-gray-800 rounded text-gray-300 flex p-2'}>
+    <div
+      className={
+        'max-w-[1300px] m-auto bg-gray-800 rounded text-gray-300 flex p-2 text-lg'
+      }
+    >
       <div className={'w-full flex-col'}>
         <div className={'w-full flex-shrink-0 p-2'}>
           <Dashboard
             budget={remainingBudget ? remainingBudget : 0}
             month={month[0]}
             year={month[1]}
-            setDropDownVisible={setDropDownVisible}
             savingNecessary={savingNecessary}
             setRate={setRate}
             setEom={setEom}

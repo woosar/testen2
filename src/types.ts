@@ -32,6 +32,25 @@ export interface IConfig extends Document {
   block_value: number;
 }
 
+export enum Account {
+  Giro = 'Giro',
+  GiroAlt = 'Giro (alt)',
+  Visa = 'VISA',
+  MasterCard = 'Mastercard',
+  Savings1 = 'Rücklagen',
+  Savings2 = 'Sparen (Haus)',
+  Savings3 = 'Sparen (Sonstiges)',
+  Cash = 'Bargeld',
+}
+
+export interface Expense {
+  account: Account;
+  purchaseId: string;
+  value: number;
+  comment: string;
+  date: Date;
+}
+
 export interface IEntry {
   name: string;
   current_value: number;
@@ -60,3 +79,7 @@ export const create_entry = (
 ): IEntry => {
   return { name, current_value, max_value, rest_value };
 };
+
+// export interface Purchase{
+//
+// }

@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import Purchase from '../models/Purchase.ts';
+import Account from '../models/Account.ts';
 
 const router = Router();
 
-router.get('/purchases', async (req, res) => {
+router.get('/accounts', async (req, res) => {
   try {
     const query = req.query;
     console.log(query);
-    const items = await Purchase.find(query);
+    const items = await Account.find(query);
     res.json(items);
   } catch (error) {
     console.log(error);

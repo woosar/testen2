@@ -4,7 +4,6 @@ interface Props {
   month: number;
   year: number;
   budget: number;
-  setDropDownVisible: (isVisible: boolean) => void;
   savingNecessary: boolean;
   setRate: (rate: boolean) => void;
   setEom: (eom: boolean) => void;
@@ -17,7 +16,6 @@ interface Props {
 const Dashboard = ({
   month,
   year,
-  setDropDownVisible,
   budget,
   setEom,
   setRate,
@@ -61,7 +59,7 @@ const Dashboard = ({
           'w-full bg-gray-700 rounded p-4 flex justify-between items-center'
         }
       >
-        <span onClick={() => setDropDownVisible(true)}>
+        <span>
           {getMonthName(month)} {year}
         </span>
         <div className={'w-1/4 flex justify-center space-x-2'}>
@@ -75,16 +73,15 @@ const Dashboard = ({
             handleSwitch={handleEom}
             title={'Ende des Monats'}
           />
-          {savingNecessary ? (
-            <Switch
-              switchOn={rate}
-              handleSwitch={handleRate}
-              title={'Monatliche Rate'}
-            />
-          ) : null}
+
+          <Switch
+            switchOn={rate}
+            handleSwitch={handleRate}
+            title={'Monatliche Rate'}
+          />
         </div>
 
-        <div className={'w-[100px] text-right'}>{budget.toFixed(2)} €</div>
+        <div className={'min-w-[100px] text-right'}>{budget.toFixed(2)} €</div>
       </div>
     </>
   );

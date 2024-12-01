@@ -1,10 +1,14 @@
 import axios from 'axios';
-import { IConfig } from '../types.ts';
+import { IConfig, ITransaction } from '../types.ts';
+import { IPurchase } from '../models/Purchase.ts';
+import { IAccount } from '../models/Account.ts';
 
-const API_URL = 'http://localhost:3000/api/items';
-const API_URL_TRANSACTIONS = 'http://localhost:3000/api/transactions';
-const API_URL_CATEGORIES = 'http://localhost:3000/api/categories';
-const API_URL_CONFIG = 'http://localhost:3000/api/config';
+const API_URL = 'http://192.168.178.20:3000/api/items';
+const API_URL_TRANSACTIONS = 'http://192.168.178.20:3000/api/transactions';
+const API_URL_CATEGORIES = 'http://192.168.178.20:3000/api/categories';
+const API_URL_CONFIG = 'http://192.168.178.20:3000/api/config';
+const API_URL_PURCHASES = 'http://192.168.178.20:3000/api/purchases';
+const API_URL_ACCOUNTS = 'http://192.168.178.20:3000/api/accounts';
 
 export const getItems = async (queryParams = {}) => {
   try {
@@ -16,7 +20,9 @@ export const getItems = async (queryParams = {}) => {
   }
 };
 
-export const getTransactions = async (queryParams = {}) => {
+export const getTransactions = async (
+  queryParams = {}
+): Promise<ITransaction[]> => {
   try {
     const response = await axios.get(API_URL_TRANSACTIONS, {
       params: queryParams,
@@ -46,6 +52,30 @@ export const getConfig = async (queryParams = {}): Promise<IConfig> => {
       params: queryParams,
     });
     return response.data[0];
+  } catch (error) {
+    console.error('Error fetching asd:', error);
+    throw error;
+  }
+};
+
+export const getPurchases = async (queryParams = {}): Promise<IPurchase[]> => {
+  try {
+    const response = await axios.get(API_URL_PURCHASES, {
+      params: queryParams,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching purchases:', error);
+    throw error;
+  }
+};
+
+export const getAccounts = async (queryParams = {}): Promise<IAccount[]> => {
+  try {
+    const response = await axios.get(API_URL_ACCOUNTS, {
+      params: queryParams,
+    });
+    return response.data;
   } catch (error) {
     console.error('Error fetching categories:', error);
     throw error;

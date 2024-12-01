@@ -1,4 +1,5 @@
 import Evaluations from './Evaluations.tsx';
+import Purchases from './Purchases.tsx';
 
 interface Props {
   page: string;
@@ -31,6 +32,8 @@ const Content = ({
           setSavingNecessary={setSavingNecessary}
         />
       );
+    } else if (page === 'purchases') {
+      return <Purchases />;
     }
     return <span>{page}</span>;
   };

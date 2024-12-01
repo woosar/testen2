@@ -1,4 +1,9 @@
-import { getCategories, getConfig, getTransactions } from './databaseService';
+import {
+  getCategories,
+  getConfig,
+  getTransactions,
+} from './databaseService.ts';
+// import { getConfig } from './databaseService.ts';
 import {
   create_entry,
   ICategoryValue,
@@ -33,6 +38,7 @@ const fetchCategories = async () => {
   //todo: query
   try {
     const raw_categories = await getCategories();
+    // console.log(raw_categories.categories);
     return raw_categories.categories;
   } catch (error) {
     console.error('Error fetching categories:', error);
@@ -41,7 +47,11 @@ const fetchCategories = async () => {
 };
 
 export const sumTest = async () => {
-  const asd: ITransaction[] = await fetchTransactions(2024, 11);
+  const asd: ITransaction[] = await fetchTransactions(2024, 12);
+
+  // asd.map((entry) => {
+  //   console.log(entry);
+  // });
 
   return asd.map((entry) => entry.value).reduce((acc, curr) => acc + curr, 0);
   // return 1;
@@ -52,6 +62,9 @@ export const monthly_balance = async (
   month: number = new Date().getMonth()
 ) => {
   const categories: { [key: string]: string[] } = await fetchCategories();
+  // console.log('start1');
+  // console.log(categories);
+  // console.log('stop');
 
   const config = await getConfig();
   const overhead_tags = config.overhead;
@@ -122,20 +135,29 @@ export const create_overview = async (
     monthly_evaluation_by_tag
   );
 
+  // console.log(monthly_evaluation);
+
   const entries: IEntry[] = [];
   let necessary: number = 0;
   let counter: number = 0;
+  let never_gas = true;
   for (const main_category_entry of monthly_evaluation) {
+    // console.log(`alle: ${main_category_entry.name}`);
     let max_value: number | null = null;
 
     if (['Tanken', 'Fixkosten'].includes(main_category_entry.name)) {
+      // console.log(
+      //   `${main_category_entry.name}:${main_category_entry.value / 100}`
+      // );
       switch (main_category_entry.name) {
         case 'Notwendige Ausgaben': {
+          console.log('???');
           max_value = config.monthly_budget;
           break;
         }
         case 'Tanken': {
           max_value = config.reserved_gas;
+          never_gas = false;
           break;
         }
         case 'Fixkosten': {
@@ -156,9 +178,15 @@ export const create_overview = async (
     } else if (
       ['Lebensmittel', 'Notwendige Ausgaben'].includes(main_category_entry.name)
     ) {
+      // console.log(
+      //   `${main_category_entry.name}:${main_category_entry.value / 100}`
+      // );
       counter += 1;
       necessary += main_category_entry.value;
     } else {
+      // console.log(
+      //   `${main_category_entry.name}:${main_category_entry.value / 100}`
+      // );
       const entry = create_entry(
         main_category_entry.name,
         main_category_entry.value
@@ -166,7 +194,7 @@ export const create_overview = async (
       entries.push(entry);
     }
   }
-  if (counter === 2) {
+  if (counter > 0) {
     entries.push(
       create_entry(
         'Notwendige Ausgaben',
@@ -177,13 +205,21 @@ export const create_overview = async (
     );
   }
 
+  if (never_gas) {
+    entries.push(create_entry('Tanken', 0, 47500, 47500));
+  }
+  // console.log(entries);
+
   const expected_sum: number = await sumTest();
+
   const actual_sum: number = entries.reduce(
     (acc, curr) => acc + curr.current_value,
     0
   );
+  // console.log(actual_sum);
 
   const checksum = expected_sum - actual_sum;
+  // console.log(entries);
   if (checksum !== 0) {
     throw new Error('transaction sum is not equal to category sum');
   }
@@ -286,3 +322,5 @@ const remaining_months = () => {
 
   return 12 - month;
 };
+
+// const x = await get_overview_interface(2024, 11, false, false, false);
