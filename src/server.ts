@@ -14,11 +14,12 @@ app.use(cors());
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const HOST = '192.168.178.20'; // Listen on all network interfaces
-
+// const mongoURI = process.env.MONGO_URI || 'mongodb://admin:Einszwei3@192.168.178.51:27017/bookkeeping';
 mongoose
-  .connect('mongodb://localhost:27017/bookkeeping', {
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true,
+  .connect('mongodb://192.168.178.51:27017', {
+    user: 'admin',
+    pass: 'Einszwei3',
+    dbName: 'bookkeeping',
   })
   .then(() => {
     console.log('Connected to MongoDB');

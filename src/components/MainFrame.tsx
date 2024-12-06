@@ -2,6 +2,7 @@ import Navbar from './Navbar.tsx';
 import Content from './Content.tsx';
 import { useEffect, useState } from 'react';
 import Dashboard from './Dashboard.tsx';
+import Accounts from './Accounts.tsx';
 
 interface Props {
   month: [number, number];
@@ -47,8 +48,15 @@ function MainFrame({ month }: Props) {
             rate={rate}
           />
         </div>
+        <div className={'w-full flex-shrink-0 p-2'}>
+          <Accounts />
+        </div>
         <div className={'w-full flex'}>
-          <div className={'w-1/5 flex-shrink-0 p-2'}>
+          <div
+            className={
+              'w-1/5 flex-shrink-0 p-2 flex flex-col h-full justify-center'
+            }
+          >
             <Navbar
               listOfPages={listOfPages}
               activePage={activePage}

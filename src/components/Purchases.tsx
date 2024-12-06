@@ -23,7 +23,8 @@ const Purchases = () => {
 
   const availableTabs = expenses
     ? (Object.entries(expenses) as [Account, Expense[]][]).filter(
-        ([_, value]) => {
+        ([key, value]) => {
+          console.log(key, value);
           return value.length > 0;
         }
       )
@@ -34,7 +35,7 @@ const Purchases = () => {
       <div className={'flex flex-col w-full'}>
         <div className={'flex space-x-2 w-full'}>
           {availableTabs.map((entry: [Account, Expense[]]) => {
-            // console.log(balances[entry[0]]);
+            // console.log(balances);
             return (
               <Tab
                 name={entry[0]}

@@ -21,7 +21,6 @@ const Tab = ({ name, active, onClick, value }: Props) => {
       className={`p-2  w-full rounded-t ${style} flex justify-center`}
     >
       {name}
-      {(value / 100).toFixed(2)}
     </button>
   );
 };

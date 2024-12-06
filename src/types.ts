@@ -41,6 +41,8 @@ export enum Account {
   Savings2 = 'Sparen (Haus)',
   Savings3 = 'Sparen (Sonstiges)',
   Cash = 'Bargeld',
+  Ing = 'Giro (ING)',
+  IngSpar = 'Sparen (ING)',
 }
 
 export interface Expense {

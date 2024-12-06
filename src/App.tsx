@@ -9,7 +9,6 @@ const App: React.FC = () => {
   return (
     <div className={'w-full m-auto bg-gray-900 min-h-screen p-4'}>
       <MainFrame month={month} />
-      {month}
     </div>
   );
 };

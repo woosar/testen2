@@ -206,7 +206,7 @@ export const create_overview = async (
   }
 
   if (never_gas) {
-    entries.push(create_entry('Tanken', 0, 47500, 47500));
+    entries.push(create_entry('Tanken', 0, 47000, 47000));
   }
   // console.log(entries);
 
@@ -217,7 +217,7 @@ export const create_overview = async (
     0
   );
   // console.log(actual_sum);
-
+  // console.log(expected_sum);
   const checksum = expected_sum - actual_sum;
   // console.log(entries);
   if (checksum !== 0) {
@@ -244,7 +244,7 @@ export const create_overview = async (
       .reduce((acc, curr) => acc + curr, 0) -
     Math.round(100 * config.savings_goal);
 
-  console.log(current_savings);
+  // console.log(current_savings);
   let monthly_rate: number | null;
   if (current_savings < 0 && include_monthly_rate) {
     monthly_rate = Math.round(current_savings / remaining_months());
@@ -259,7 +259,7 @@ export const create_overview = async (
     (end_of_month ? 0 : gather_rest_values(entries));
   entries.push(create_entry('Aktuelles Budget', current_balance));
 
-  console.log(monthly_rate);
+  // console.log(monthly_rate);
 
   const current_savings_name: string =
     current_savings > 0 ? 'Aktuell Gespart' : 'Bis zum Sparziel';
@@ -323,4 +323,4 @@ const remaining_months = () => {
   return 12 - month;
 };
 
-// const x = await get_overview_interface(2024, 11, false, false, false);
+const x = await get_overview_interface(2024, 12, false, false, false);

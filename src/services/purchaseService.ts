@@ -35,6 +35,12 @@ const getAccountMap = async (): Promise<{ [key: string]: Account }> => {
       case 'cash':
         hashmap[entry._id] = Account.Cash;
         break;
+      case 'ing':
+        hashmap[entry._id] = Account.Ing;
+        break;
+      case 'ing_spar':
+        hashmap[entry._id] = Account.IngSpar;
+        break;
       default:
         throw new Error('fuck you');
     }
@@ -73,11 +79,14 @@ const transActionsToExpenses = async (
       };
     })
   );
+
   // console.log(expenses[0]);
-  expenses.sort((a, b) => {
+  const asd = expenses.filter((entry) => entry.value != 0);
+
+  asd.sort((a, b) => {
     return a.date.getTime() - b.date.getTime();
   });
-  return expenses;
+  return asd;
 };
 
 const splitByAccount = (expenses: Expense[]): Record<Account, Expense[]> => {
@@ -90,6 +99,8 @@ const splitByAccount = (expenses: Expense[]): Record<Account, Expense[]> => {
     [Account.Savings2]: [],
     [Account.Savings3]: [],
     [Account.Cash]: [],
+    [Account.Ing]: [],
+    [Account.IngSpar]: [],
   };
 
   expenses.map((entry) => {
@@ -136,6 +147,8 @@ export const accountBalance = async (year: number, month: number) => {
     [Account.Savings2]: 0,
     [Account.Savings3]: 0,
     [Account.Cash]: 0,
+    [Account.Ing]: 0,
+    [Account.IngSpar]: 0,
   };
   accounts.map((entry) => {
     hashmap[accountMap[entry._id]] = entry.initial_balance;
@@ -146,3 +159,4 @@ export const accountBalance = async (year: number, month: number) => {
   });
   return hashmap;
 };
+
