@@ -322,5 +322,3 @@ const remaining_months = () => {
 
   return 12 - month;
 };
-
-const x = await get_overview_interface(2024, 12, false, false, false);
